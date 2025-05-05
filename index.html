@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee</title>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <!-- Font Awesome CDN Link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Custom CSS File Link  -->
+    <link rel="stylesheet" href="css/style.css">
+<style>
+   
+        .dialog-box, .unique-modal-dialog, .logged-in-modal-dialog, .reset-password-modal-dialog {
+            display: none; /* Initially hidden for all */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Overlay */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+        }
+
+
+        /* Dialog content style */
+        .dialog-box > div, .unique-modal-content, .logged-in-modal-content, .reset-password-modal-content {
+            background-color: white; /* Dialog background */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 300px; /* Default width for dialogs */
+        }
+
+        /* Close button styling */
+        .dialog-box .close-btn, .unique-close-btn, .reset-password-close-btn, .logged-in-close-btn {
+            cursor: pointer;
+            float: right;
+            font-size: 20px; /* Set the font size for close buttons */
+        }
+
+        /* Headings and form elements */
+        .dialog-box h2, .unique-modal-content h2, .reset-password-modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px; /* Increase padding for larger input fields */
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px; /* Increase input text size */
+        }
+
+        /* Button styles */
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px; /* Adjust padding for smaller buttons */
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto; /* Set width to auto to fit content */
+            max-width: 100%; /* Prevent overflow */
+            text-align: center; /* Center text */
+            font-size: 14px; /* Ensure button text is readable */
+            white-space: nowrap; /* Prevent text from wrapping */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Specific styles for reset password modal */
+        .reset-password-modal-content {
+            width: 400px; /* Adjust width for reset password dialog */
+        }
+        #search-boxx{
+            height: 80px;
+            width: 160px;
+            margin-bottom: 10px;
+        }
+        .table-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 16px; /* Increase padding for larger buttons */
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1 1 150px; /* Allow buttons to grow and shrink, with a base width of 150px */
+            text-align: center; /* Center text */
+            font-size: 16px; /* Increase button text size */
+            white-space: normal; /* Allow text to wrap */
+            overflow: hidden; /* Hide overflow */
+            text-overflow: ellipsis; /* Add ellipsis for overflow text */
+            max-width: 100%; /* Prevent overflow */
+            min-height: 50px; /* Set a minimum height for the buttons */
+        }
+
+        .table-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .reserved {
+            background-color: #dc3545;
+        }
+
+        .dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            border-radius: 5px;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .dialog h3 {
+            margin: 0 0 10px;
+            color: #343a40;
+        }
+
+        .dialog p {
+            margin: 5px 0;
+        }
+
+        #reservation-form {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            border-radius: 5px;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        input[type="text"], input[type="time"], input[type="date"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        #search-button:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Loading Spinner Styles */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure it is above all other content */
+        }
+
+        .loader .spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #tables-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above the container */
+        }
+
+        .table-button.available {
+            background: linear-gradient(145deg, #a8ffa5, #8ec68c);
+            color: #004400;
+        }
+
+        .table-button.reserved {
+            background: linear-gradient(145deg, #ffa5a5, #c68c8c);
+            color: #660000;
+            cursor: not-allowed;
+        }
+
+        .table-button.reserved:hover {
+            transform: none; /* No hover effect for reserved buttons */
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), -5px -5px 15px rgba(255, 255, 255, 0.7);
+        }
+        /* Notification Box Styles */
+        .notification {
+            position: fixed;
+            bottom: 20px;  /* Position the notification at the bottom */
+            left: 20px;    /* Position it from the left side */
+            padding: 20px;
+            background-color: #28a745; /* Green color for open */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            opacity: 1;
+            z-index: 1000;
+            animation: fadeInOut 10s ease-in-out;
+        }
+
+        /* Animation for fading in and out */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Adjust text size and prevent overflow */
+        .content p {
+            font-size: 14px; /* Decrease font size */
+            line-height: 1.4; /* Adjust line height for better readability */
+            overflow-wrap: break-word; /* Ensure long words break to the next line */
+            max-width: 100%; /* Prevent overflow */
+        }
+
+        .heading {
+            font-size: 20px; /* Decrease heading size */
+            margin-bottom: 15px; /* Add space below headings */
+        }
+
+        /* Adjust button sizes if necessary */
+        button {
+            font-size: 14px; /* Decrease button font size */
+            padding: 8px; /* Adjust padding for smaller buttons */
+        }
+
+        /* Adjust modal dialog content */
+        .dialog-box > div, .unique-modal-content, .logged-in-modal-content, .reset-password-modal-content {
+            max-width: 90%; /* Prevent overflow in modals */
+            overflow-wrap: break-word; /* Ensure text wraps in modals */
+            padding: 15px; /* Adjust padding for smaller dialogs */
+        }
+
+        /* Adjust other text elements as needed */
+        h3, h2 {
+            font-size: 18px; /* Decrease heading sizes */
+            overflow-wrap: break-word; /* Ensure headings wrap */
+        }
+
+        /* Additional adjustments for responsiveness */
+        @media (max-width: 600px) {
+            .content p {
+                font-size: 12px; /* Further decrease font size on small screens */
+            }
+
+            .heading {
+                font-size: 18px; /* Further decrease heading size on small screens */
+            }
+
+            button {
+                font-size: 12px; /* Further decrease button font size on small screens */
+            }
+        }
+
+        .book-now-button {
+    background-color: #00ff11; /* Green background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 15px; /* Padding for the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 10px; /* Space above the button */
+    display: block; /* Make it a block element */
+    width: auto; /* Auto width (only as wide as the text) */
+    min-width: 120px; /* Ensure a decent button size */
+        }
+
+        /* Button Hover Effect */
+        .book-now-button:hover {
+            background-color: #00b31b; /* Darker green on hover */
+        }
+
+        /* Ensure the button appears below the tables */
+        #book-now-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center; /* Center the button */
+            margin-top: 15px; /* Space from tables */
+            clear: both; /* Make sure it appears below floated elements */
+        }
+
+        .recommendation-section {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column; /* Stack input and button vertically */
+    gap: 10px;
+    align-items: start; /* Align to the left */
+}
+
+#guest-count {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 230px;
+}
+
+#recommend-table-btn {
+    background-color: #28a745;
+    padding: 10px 20px;
+    color: white; /* Ensure text is visible */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#recommend-table-btn:hover {
+    background-color: #218838;
+}
+
+
+        .recommended-tables {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        #my-bookings-btn {
+            display: block; /* Ensure it is displayed */
+            margin-top: 20px; /* Add some space above */
+        }
+
+        .recommended-tables h3 {
+            font-size: 24px; /* Increase the font size for the heading */
+            margin-bottom: 10px; /* Add some space below the heading */
+        }
+
+        .recommended-tables div {
+            font-size: 18px; /* Increase the font size for the table combinations */
+        }
+       
+            .recommended-tables {
+        font-size: 1.5rem; /* Increase font size */
+        font-weight: bold;
+        color: #007bff; /* Highlight color */
+        margin: 10px 0;
+        margin-bottom: 30px;
+    }
+
+    .recommendation-header {
+        font-size: 1.5rem; /* Larger heading size */
+        font-weight: bold;
+        color: #333;
+        margin-top: 20px;
+    }
+
+</style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div id="menu-btn" class="fas fa-bars"></div>
+
+        <a href="#" class="logo">BATAS <i class="fas fa-mug-hot"></i></a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#about">about</a>
+            
+            <a href="#book">book</a>
+        </nav>
+
+        <a href="#" id="login-link" class="btn"><img src="user.svg" alt="SVG Image" width="15" height="15"></a>
+
+
+
+    </header>
+
+    <!-- HOME -->
+    <section class="home" id="home">
+        <div class="row">
+            <div class="content">
+                <h3>fresh Brunch in the morning</h3>
+            </div>
+
+            <div class="image">
+                <img src="image/home-img-1.png" class="main-home-image" alt="">
+            </div>
+        </div>
+
+        <div class="image-slider">
+            <img src="image/home-img-1.png" alt="">
+            <img src="image/menu1-image-removebg-preview.png" alt="">
+            <img src="image/crossiant.png" alt="">
+        </div>
+
+
+
+      <!-- Login Dialog -->
+        <div class="dialog-box" id="login-dialog">
+            <div>
+                <span class="close-btn" id="close-login-dialog">&times;</span>
+                <h2>Login</h2>
+                <form class="login-form" id="login-form">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                    <button type="submit">Submit</button>
+                </form>
+                <div id="error-message" style="color:red;"></div> <!-- For displaying error messages -->
+                <p>Don't have an account? <a href="#registration-dialog" id="register-link">Register here</a></p>
+                <p><a href="#reset-dialog" id="reset-link">Forgot password?</a></p>
+            </div>
+        </div>
+
+
+
+        <!-- Registration Dialog -->
+        <div class="unique-modal-dialog" style="display:none;">
+            <div class="unique-modal-content">
+                <span class="close-btn unique-close-btn">&times;</span> <!-- Updated class -->
+                <h2 class="unique-modal-title">Register</h2>
+                <form id="unique-registration-form">
+                    <label for="registration-dialog-username">Username</label>
+                    <input type="text" id="registration-dialog-username" name="registration-dialog-username" required>
+                    <span id="usernameError" style="color: red; font-size: 0.9em;"></span>
+                    
+                    <label for="registration-dialog-email">Email</label>
+                    <input type="email" id="registration-dialog-email" name="registration-dialog-email" required>
+                    <span id="emailError" style="color: red; font-size: 0.9em;"></span>
+                    
+                    <label for="registration-dialog-password">Password</label>
+                    <input type="password" id="registration-dialog-password" name="registration-dialog-password" required>
+                    <span id="passwordError" style="color: red; font-size: 0.9em;"></span>
+                    
+                    <label for="registration-dialog-confirm-password">Confirm Password</label>
+                    <input type="password" id="registration-dialog-confirm-password" name="registration-dialog-confirm-password" required>
+                    <span id="confirmPasswordError" style="color: red; font-size: 0.9em;"></span>
+                    
+                    <button type="submit" class="unique-register-btn">Register</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <!-- Logged In Dialog -->
+        <div class="logged-in-modal-dialog" style="display:none;">
+            <div class="logged-in-modal-content">
+                <span class="close-btn logged-in-close-btn">&times;</span> <!-- Close button -->
+                <p class="logged-in-text">Logged in as <span id="logged-in-username">Username</span></p>
+                <button class="logged-in-logout-btn">Logout</button>
+            </div>
+        </div>
+
+
+        <!-- Reset Password Dialog -->
+        <div class="reset-password-modal-dialog" style="display:none;">
+            <div class="reset-password-modal-content">
+                <span class="close-btn reset-password-close-btn">&times;</span> <!-- Updated class -->
+                <h2>Reset Password</h2>
+                <form>
+                    <label for="reset-password-username">Username</label>
+                    <input type="text" id="reset-password-username" required>
+
+                    <label for="reset-password-auth-code">Auth Code</label>
+                    <input type="text" id="reset-password-auth-code" required>
+
+                    <label for="reset-password-new">New Password</label>
+                    <input type="password" id="reset-password-new" required>
+
+                    <button type="submit" class="reset-password-btn">Reset Password</button>
+                </form>
+            </div>
+        </div>
+
+
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+        <h1 class="heading">about us <span>why choose us</span></h1>
+
+        <div class="row">
+            <div class="image">
+                <img src="image/image.png" alt="">
+            </div>
+
+            <div class="content">
+                <h3 class="title">what's make our cafe special!</h3>
+                <p>Located in the heart of Kathmandu, BATAS Cafe is your go-to spot for quality coffee and fresh snacks. We pride ourselves on our carefully crafted coffee, made from high-quality beans and brewed to perfection. Alongside our coffee, we offer a range of delicious snacks that are perfect for a quick bite or a casual meal.
+
+                    Whether you're stopping by for a morning coffee, an afternoon snack, or a cozy place to relax, BATAS welcomes you with a warm atmosphere and friendly service. Come by and enjoy the BATAS experience!</p>
+            </div>
+        </div>
+    </section>
+
+   
+
+    <!-- BOOK -->
+    <section class="book" id="book">
+        <h1 class="heading">booking <span>reserve a table</span></h1>
+        <div class="recommendation-section">
+            <div>
+                <label for="guest-count">Enter number of guests:</label>
+                <input type="number" id="guest-count" placeholder="Enter number of guests" min="1">
+            </div>
+        
+            <!-- Use a different name for the date input -->
+            <div>
+                <label for="res-date">Select reservation date:</label>
+                <input type="date" id="res-date">
+            </div>
+        
+            <div>
+                <button id="recommend-table-btn" onclick="recommendTables()">Find  Table combinations</button>
+            </div>
+        
+            <!-- Section to display recommendations -->
+            <div id="table-recommendations" style="margin-top: 20px;">
+                <!-- Recommended tables will be populated here -->
+            </div>
+        </div>
+        <h2>Select a Reservation Date</h2>
+        <div id="search-boxx">
+            <input type="date" id="reservation-date" />
+            <button id="search-button" onclick="fetchTables()">Search</button>
+        </div>
+        <div id="tables-container" style="margin-top: 20px;"></div>
+
+        </div>
+        
+        
+
+
+        
+
+        <div id="reservation-form" style="display: none;">
+            <h3>Reserve Table</h3>
+            <form>
+                <input type="hidden" id="table-number" name="table-number" />
+                <input type="text" id="name" name="name" placeholder="Name" class="box" required />
+                <span id="nameError" style="color: red; font-size: 0.9em;"></span>
+                <input type="number" id="mobile" name="mobile" placeholder="Mobile Number" class="box" required />
+                <span id="mobileError" style="color: red; font-size: 0.9em;"></span>
+                <label for="time-slot">Select Time Slot:</label>
+                <select id="time-slot" name="time-slot" class="box" required>
+                    <option value="" disabled selected>Select a time slot</option>
+                    <option value="morning">Breakfast (8 AM - 10 AM)</option>
+                    <option value="afternoon">Lunch (1 PM - 3 PM)</option>
+                    <option value="night">Dinner (8 PM - 10 PM)</option>
+                </select>
+                <span id="timeSlotError" style="color: red; font-size: 0.9em;"></span>
+                <button type="button" onclick="submitReservation()" class="btn">Reserve</button>
+                <button type="button" onclick="closeReservationForm()" class="close-btn btn">Cancel</button>
+            </form>
+        </div>
+        <!-- My Bookings Button -->
+        <button id="my-bookings-btn" onclick="fetchUserReservations()">My Bookings</button>
+        <span id="my-bookings-description" style="font-size: 16px; display: block; margin-top: 10px;">Click to view your reservations</span>
+    </section>
+
+    <!-- FOOTER -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>our branches</h3>
+                <a href="https://www.google.com/maps"><i class="fas fa-arrow-right"></i> BABARMAHAL</a>
+                <a href="https://www.google.com/maps"><i class="fas fa-arrow-right"></i> DURBARMARG</a>
+                <a href="https://www.google.com/maps"><i class="fas fa-arrow-right"></i> THAMEL</a>
+                <a href="https://www.google.com/maps"><i class="fas fa-arrow-right"></i> PATAN</a>
+                <a href="https://www.google.com/maps"><i class="fas fa-arrow-right"></i> JHAMSIKHEL</a>
+            </div>
+
+            
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="tel:+977-9841234567"><i class="fas fa-phone"></i> +977-9841234567</a>
+                <a href="tel: +977-9851234568"><i class="fas fa-phone"></i> +977-9851234568</a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=thebatas2024@gmail.com&su=Hello&body=YOur%20Question%20?."><i class="fas fa-envelope"></i> thebatas2024@gmail.com</a>
+                
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="https://www.facebok.com"><i class="fab fa-facebook-f"></i> facebook</a>
+                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i> instagram</a>
+                
+            </div>
+        </div>
+
+        <div class="credit">created by <span>the GAGS</span> | all rights reserved</div>
+    </section>
+
+    <!-- SWIPER -->
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+
+    <!-- Custom JS File Link  -->
+    <script src="js/script.js"></script>
+
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+    <div id="open-today-notification" class="notification" style="display: none;">
+        We are open today!
+    </div>
+    
+<script>
+ // Handle login  
+
+                // Get dialog elements
+            const loginDialog = document.getElementById('login-dialog');
+                const registerDialog = document.querySelector('.unique-modal-dialog');
+                const resetDialog = document.querySelector('.reset-password-modal-dialog');
+                const loggedInDialog = document.querySelector('.logged-in-modal-dialog');
+                const loggedInUsernameDisplay = document.getElementById('logged-in-username');
+
+                // Get buttons and links
+                const loginLink = document.getElementById('login-link');
+                const closeLoginDialog = document.getElementById('close-login-dialog');
+                const registerLink = document.getElementById('register-link');
+                const resetLink = document.getElementById('reset-link');
+                const closeLoggedInDialog = document.querySelector('.logged-in-close-btn');
+
+                // Function to check login state
+            function checkLoginState() {
+                return sessionStorage.getItem('loggedIn') === 'true';
+                }
+
+                // Open login dialog if not logged in
+                loginLink.onclick = () => {
+                if (!checkLoginState()) {
+                    loginDialog.style.display = 'flex';
+                } else {
+                    showLoggedInDialog(sessionStorage.getItem('username'));
+                }
+                };
+
+                // Close login dialog
+                closeLoginDialog.onclick = () => {
+                loginDialog.style.display = 'none';
+                };
+
+                // Open registration dialog
+                registerLink.onclick = (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                loginDialog.style.display = 'none'; // Close login dialog
+                registerDialog.style.display = 'flex'; // Open registration dialog
+                };
+
+                // Close registration dialog
+                document.querySelector('.unique-close-btn').onclick = () => {
+                registerDialog.style.display = 'none';
+                };
+
+                // Open reset password dialog
+                resetLink.onclick = (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                loginDialog.style.display = 'none'; // Close login dialog
+                resetDialog.style.display = 'flex'; // Open reset password dialog
+                };
+
+                // Close reset password dialog
+                document.querySelector('.reset-password-close-btn').onclick = () => {
+                resetDialog.style.display = 'none';
+                };
+
+                // Close logged in dialog
+                closeLoggedInDialog.onclick = () => {
+                loggedInDialog.style.display = 'none';
+                };
+
+                // Close dialogs when clicking outside
+                window.onclick = (event) => {
+                if (event.target === loginDialog) {
+                    loginDialog.style.display = 'none';
+                } else if (event.target === registerDialog) {
+                    registerDialog.style.display = 'none';
+                } else if (event.target === resetDialog) {
+                    resetDialog.style.display = 'none';
+                } else if (event.target === loggedInDialog) {
+                    loggedInDialog.style.display = 'none';
+                }
+                };
+
+                // Function to show the logged-in dialog with the username
+                function showLoggedInDialog(username) {
+                // Set the username in the dialog
+                loggedInUsernameDisplay.textContent = `${username}`;
+                loggedInDialog.style.display = 'flex'; // Show the dialog
+                }
+
+                // Logout button functionality
+                document.querySelector('.logged-in-logout-btn').onclick = () => {
+                fetch('UserLogin.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({ logout: true })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        sessionStorage.removeItem('loggedIn'); // Remove logged in status
+                        sessionStorage.removeItem('username'); // Remove username
+                        loggedInDialog.style.display = 'none'; // Close logged-in dialog
+                        alert('You have logged out successfully.');
+                    }
+                })
+                .catch(error => console.error('Error during logout:', error));
+                };
+
+                // Login form submission handling
+                document.getElementById('login-form').onsubmit = (e) => {
+                e.preventDefault(); // Prevent the form from submitting
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                fetch('UserLogin.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        login: true,
+                        username: username,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        sessionStorage.setItem('loggedIn', 'true'); // Set logged in status
+                        sessionStorage.setItem('username', data.username); // Store username
+                        loginDialog.style.display = 'none'; // Close login dialog
+                        showLoggedInDialog(data.username); // Show the logged-in dialog with the username
+                    } else {
+                        document.getElementById('error-message').textContent = data.message;
+                    }
+                })
+                .catch(error => console.error('Error during login:', error));
+    };
+
+
+    // Handle registration
+    document.querySelector('.unique-register-btn').addEventListener('click', function (event) { 
+        event.preventDefault(); // Prevent default form submission
+
+        const username = document.getElementById('registration-dialog-username').value;
+        const email = document.getElementById('registration-dialog-email').value;
+        const password = document.getElementById('registration-dialog-password').value;
+        const confirmPassword = document.getElementById('registration-dialog-confirm-password').value;
+
+        // Clear any previous error messages
+        const clearError = (id) => {
+            const errorSpan = document.getElementById(id);
+            if (errorSpan) errorSpan.textContent = '';
+        };
+
+        clearError('usernameError');
+        clearError('emailError');
+        clearError('passwordError');
+        clearError('confirmPasswordError');
+
+        let isValid = true;
+
+        // Username Validation
+        const usernameRegex = /^[A-Za-z0-9]+$/;
+        if (!usernameRegex.test(username)) {
+            let usernameError = document.getElementById('usernameError');
+            if (!usernameError) {
+                usernameError = document.createElement('span');
+                usernameError.id = 'usernameError';
+                usernameError.style.color = 'red';
+                document.getElementById('registration-dialog-username').after(usernameError);
+            }
+            usernameError.textContent = 'Username must not contain special characters.';
+            isValid = false;
+        }
+
+        // Email Validation
+        const emailRegex = /^[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            let emailError = document.getElementById('emailError');
+            if (!emailError) {
+                emailError = document.createElement('span');
+                emailError.id = 'emailError';
+                emailError.style.color = 'red';
+                document.getElementById('registration-dialog-email').after(emailError);
+            }
+            emailError.textContent = 'Please enter a valid email address.';
+            isValid = false;
+        }
+
+        // Password Validation
+        const passwordRegex = /^(?=.*[A-Za-z])[A-Za-z]{5,}$/
+    ;
+        if (!passwordRegex.test(password)) {
+            let passwordError = document.getElementById('passwordError');
+            if (!passwordError) {
+                passwordError = document.createElement('span');
+                passwordError.id = 'passwordError';
+                passwordError.style.color = 'red';
+                document.getElementById('registration-dialog-password').after(passwordError);
+            }
+            passwordError.textContent = 'Password must be at least 8 characters long, with one letter, one number, and one special character.';
+            isValid = false;
+        }
+
+        // Confirm Password Validation
+        if (password !== confirmPassword) {
+            let confirmPasswordError = document.getElementById('confirmPasswordError');
+            if (!confirmPasswordError) {
+                confirmPasswordError = document.createElement('span');
+                confirmPasswordError.id = 'confirmPasswordError';
+                confirmPasswordError.style.color = 'red';
+                document.getElementById('registration-dialog-confirm-password').after(confirmPasswordError);
+            }
+            confirmPasswordError.textContent = 'Passwords do not match.';
+            isValid = false;
+        }
+
+        // If validation fails, stop execution
+        if (!isValid) {
+            return;
+        }
+
+        // Proceed with the fetch request if all validations pass
+        fetch('UserLogin.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                register: true,
+                'registration-dialog-username': username,
+                'registration-dialog-email': email,
+                'registration-dialog-password': password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Registration successful!');
+                    const registerDialog = document.querySelector('.unique-modal-dialog');
+                    registerDialog.style.display = 'none'; // Close registration dialog
+                } else {
+                    alert(data.message); // Display the error message
+                }
+            })
+            .catch(error => console.error('Error during registration:', error));
+    });
+    
+    // Open reset password dialog and send username
+
+        resetLink.onclick = (e) => {
+        e.preventDefault(); // Prevent default anchor behavior
+
+        // Get the username from the login dialog
+        const username = document.getElementById('username').value;
+
+        // Show loader before sending the request
+        showLoader(); // Show loader
+
+        // Send the username to the backend
+        fetch('PasswordReset.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+                body: new URLSearchParams({ requestReset: true, username: username }) // Include requestReset flag
+            })
+            .then(response => {
+                // Check if the response is OK (status in the range 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json(); // Parse the response as JSON
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Reset code has been sent to your email!'); // Alert for successful request
+                    resetDialog.style.display = 'flex'; // Open reset password dialog
+                } else {
+                    alert(data.message); // Alert the error message
+                }
+            })
+            .catch(error => {
+                console.error('Error sending username:', error);
+                alert('Could not send username. Please try again later.');
+            })
+            .finally(() => {
+                hideLoader(); // Hide loader after the process
+        });
+    };
+
+        // Reset password form submission handling (after the dialog is open)
+        document.querySelector('.reset-password-modal-content form').onsubmit = (e) => {
+                e.preventDefault(); // Prevent the form from submitting
+                showLoader(); // Show loader at the start of reset password process
+
+                const authCode = document.getElementById('reset-password-auth-code').value;
+                const newPassword = document.getElementById('reset-password-new').value;
+
+                fetch('PasswordReset.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        resetCode: authCode,
+                        newPassword: newPassword
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.text(); // Get the raw response text
+                    })
+                    .then(data => {
+                        // Try to parse the response as JSON
+                        try {
+                            const jsonData = JSON.parse(data);
+                            if (jsonData.success) {
+                                alert('Password reset successful!');
+                                resetDialog.style.display = 'none'; // Close reset dialog
+                            } else {
+                                alert(jsonData.message); // Alert the error message
+                            }
+                        } catch (error) {
+                            console.error('Error parsing JSON:', error);
+                            console.log('Raw response:', data); // Log the raw response for debugging
+                            alert('Unexpected response from the server.'); // Handle unexpected response
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during password reset:', error);
+                        alert('Could not reset password. Please try again later.');
+                    })
+                    .finally(() => {
+                        hideLoader(); // Hide loader after the reset password process
+                    });
+    };
+
+
+    //handle reservation {
+            const selectedDate = document.getElementById('reservation-date');
+            let reservationFormTimer; // Timer for reservation form
+
+            // Function to start the countdown timer for the reservation form
+            function startReservationTimer() {
+                const timeoutDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
+                reservationFormTimer = setTimeout(() => {
+                    closeReservationForm();
+                    alert('Time limit exceeded. Please redo your reservation.');
+                }, timeoutDuration);
+            }
+            function closeReservationForm() {
+                clearReservationTimer(); // Clear the timer
+                document.getElementById('reservation-form').style.display = 'none'; // Hide the form
+            }
+
+
+            // Function to clear the reservation timer
+            function clearReservationTimer() {
+                if (reservationFormTimer) {
+                    clearTimeout(reservationFormTimer); // Clears the existing timeout
+                    reservationFormTimer = null; // Reset the timer variable
+                }
+            }
+
+            // Function to clear the timer when the form is closed or submitted
+            function fetchTables() {
+                const date = selectedDate.value;
+                const today = new Date().toISOString().split("T")[0];
+                if (!date) {
+                    alert("Please select a reservation date.");
+                    return;
+                }
+                if (date < today) {
+        alert("You cannot fetch tables for past dates.");
+        return;
+    }
+                // Show loader while checking date availability
+                showLoader();
+
+                // Check if the selected date is available
+                fetch('checkDateAvailability.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ date: date }) // Send the selected date
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert(data.message || "Error checking date availability.");
+                        hideLoader(); // Hide loader if there's an error
+                        return;
+                    }
+
+                    // If the date is available, fetch the tables
+                    fetch('cafe_system.php?action=get_tables&date=' + date)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                alert(data.message || "Error fetching tables.");
+                                hideLoader(); // Hide loader if there's an error
+                                return;
+                            }
+
+                            const tablesContainer = document.getElementById('tables-container');
+                            tablesContainer.innerHTML = ''; // Clear existing buttons
+                            data.tables.forEach(table => {
+                                const button = document.createElement('button');
+                                button.className = 'table-button ' + (table.is_reserved ? 'reserved' : '');
+                                button.innerText = ` ${table.name} (Capacity: ${table.capacity})`;
+                                button.onclick = () => handleTableClick(table, button);
+                                tablesContainer.appendChild(button);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching tables:', error);
+                        })
+                        .finally(() => {
+                            hideLoader(); // Hide loader after fetching tables
+                        });
+                })
+                .catch(error => {
+                    console.error('Error checking date availability:', error);
+                    hideLoader(); // Hide loader if there's an error
+                });
+            }
+                
+
+            const selectedTables = new Set(); // Use a Set to store selected table IDs
+
+            // Function to handle when a table is clicked
+            function handleTableClick(table, button) {
+                // Toggle selection of the table
+                if (selectedTables.has(table.id)) {
+                    selectedTables.delete(table.id); // Remove from selection
+                    button.style.backgroundColor = '#007bff'; // Reset button color
+                    button.style.color = 'white'; // Reset text color
+                    
+                } else {
+                    selectedTables.add(table.id); // Add to selection
+                    button.style.backgroundColor = 'green'; // Change button color to white
+                    button.style.color = '#007bff'; // Change text color to blue
+                }
+
+                // Update or create the "Book Now" button
+                updateBookNowButton();
+            }
+
+        // Function to update or create the "Book Now" button
+    // Function to update or create the "Book Now" button
+
+    function updateBookNowButton() {
+        let bookNowButton = document.getElementById('book-now-button');
+
+        if (selectedTables.size > 0) {
+            if (!bookNowButton) {
+                // Ensure there's a dedicated div for the button
+                let buttonWrapper = document.getElementById('book-now-wrapper');
+                if (!buttonWrapper) {
+                    buttonWrapper = document.createElement('div');
+                    buttonWrapper.id = 'book-now-wrapper';
+                    buttonWrapper.style.width = '10%';  // Forces full width (ensuring new line)
+                    buttonWrapper.style.clear = 'both';  // Clears any floating elements
+                    buttonWrapper.style.marginTop = '20px'; // Adds spacing
+
+                    document.getElementById('tables-container').appendChild(buttonWrapper);
+                }
+
+                bookNowButton = document.createElement('button');
+                bookNowButton.id = 'book-now-button';
+                bookNowButton.className = 'book-now-button';
+                bookNowButton.innerText = 'Book Now';
+                bookNowButton.onclick = openReservationForm;
+
+                // Clear any previous content and append the button
+                buttonWrapper.innerHTML = '';
+                buttonWrapper.appendChild(bookNowButton);
+            }
+        } else {
+            let buttonWrapper = document.getElementById('book-now-wrapper');
+            if (buttonWrapper) {
+                buttonWrapper.remove(); // Remove the container when no tables are selected
+            }
+        }
+    }
+
+
+            // Function to open the reservation form
+            function openReservationForm() {
+                const reservationForm = document.getElementById('reservation-form');
+                reservationForm.style.display = 'block';
+
+                // Set the table numbers in the hidden input
+                document.getElementById('table-number').value = Array.from(selectedTables).join(', '); // Join selected table IDs
+                startReservationTimer(); // Start the timer when the form is opened
+            }
+
+            // Function to fetch and show reservation details for a specific table
+            function fetchReservationDetails(tableNumber) {
+                const date = selectedDate.value;
+
+                showLoader();
+                fetch(`cafe_system.php?action=get_reservation&table_number=${tableNumber}&date=${date}`)
+                    .then(response => response.json())
+                    .then(reservations => {
+                        showReservationDetails(tableNumber, reservations);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching reservation details:', error);
+                    })
+                    .finally(() => {
+                        hideLoader();
+                    });
+            }
+
+            // Function to show reservation details for a specific table
+            function showReservationDetails(tableNumber, reservations) {
+                const dialog = document.createElement('div');
+                dialog.className = 'dialog';
+
+                // Generate reservation details
+                const reservationDetails = reservations.map((reservation, index) => `
+                    <p>Reserved  from: ${new Date(reservation.time_from).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })} to: ${new Date(reservation.time_to).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</p>
+                `).join('');
+
+                dialog.innerHTML = `
+                    <h3>Table ${tableNumber} Reserved</h3>
+                    ${reservationDetails}
+                    <button onclick="openReservationForm(${tableNumber})">Reserve for Another Time</button>
+                    <button class="close-btn" onclick="closeDialog()">Close</button>
+                `;
+                document.body.appendChild(dialog);
+            }
+
+            // Function to close the dialog box
+            function closeDialog() {
+                const dialog = document.querySelector('.dialog');
+                if (dialog) {
+                    document.body.removeChild(dialog);
+                }
+            }
+
+            // Function to close the reservation form
+            function closeReservationForm() {
+                document.getElementById('reservation-form').style.display = 'none';
+                clearReservationTimer(); // Clear the timer when the form is closed
+            }
+
+    // Function to submit reservation with validation and email functionality
+    function submitReservation() {
+        showLoader(); // Show loader at the start of reservation process
+
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const tableNumber = document.getElementById('table-number').value.trim();
+        const timeSlot = document.getElementById('time-slot').value;
+        const reservationDate = selectedDate.value.trim();
+
+        // Map time slot to time ranges
+        const timeRanges = {
+            morning: { time_from: "08:00:00", time_to: "10:00:00" },
+            afternoon: { time_from: "13:00:00", time_to: "15:00:00" },
+            night: { time_from: "20:00:00", time_to: "22:00:00" }
+        };
+
+        const selectedTime = timeRanges[timeSlot];
+
+        // Validate form
+        if (!name || !mobile || !tableNumber || !timeSlot || !reservationDate) {
+            alert('Please fill in all fields');
+            hideLoader(); // Hide loader if validation fails
+            return;
+        }
+
+        // Name validation (no special characters)
+        const nameRegex = /^[A-Za-z\s]+$/;
+        if (!nameRegex.test(name)) {
+            alert('Name must not contain special characters.');
+            hideLoader();
+            return;
+        }
+
+        // Mobile validation (10 digits only)
+        const mobileRegex = /^\d{10}$/;
+        if (!mobileRegex.test(mobile)) {
+            alert('Mobile number must be exactly 10 digits.');
+            hideLoader();
+            return;
+        }
+
+        // Get the logged-in username from sessionStorage
+        const loggedInUsername = sessionStorage.getItem('username');
+        if (!loggedInUsername) {
+            alert("You must be logged in to make a reservation");
+            hideLoader(); // Hide loader if not logged in
+            return;
+        }
+        
+        const reservationData = {
+        name: loggedInUsername + " (" + name + ")", // Append 
+        mobile: mobile,
+        table_number: tableNumber,
+        time_from: reservationDate + ' ' + selectedTime.time_from,
+        time_to: reservationDate + ' ' + selectedTime.time_to
+    };
+
+        // Make the reservation request
+        fetch('cafe_system.php?action=make_reservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reservationData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Send confirmation email after successful reservation
+                    return fetch('send_confirmation_email.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: loggedInUsername,
+                            reservationDetails: reservationData
+                        })
+                    });
+                } else {
+                    alert(data.message);
+                    throw new Error(data.message);
+                }
+            })
+            .then(emailResponse => emailResponse.json())
+            .then(emailData => {
+                if (emailData.success) {
+                    alert("Reservation successful! A confirmation email has been sent to your registered email address.");
+                    
+                    // Call fetchTables automatically after successful reservation
+                    fetchTables(); 
+                } else {
+                    alert("Reservation successful! However, there was an issue sending the confirmation email: " + emailData.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error making reservation:', error);
+            })
+            .finally(() => {
+                hideLoader(); // Hide loader after reservation process
+                clearReservationTimer(); // Clear the timer after submission
+                closeReservationForm(); // Close the form after submission
+            });
+    }
+
+    // Function to check if today is available and show the notification
+    function checkIfOpenToday() {
+        const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+
+        // Send a POST request to check if today is available
+        fetch('checkDateAvailability.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date: today }) // Send today's date
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // If the date is available, show the notification
+                const notification = document.getElementById('open-today-notification');
+                notification.style.display = 'block'; // Show the notification box
+                setTimeout(() => {
+                    notification.style.display = 'none'; // Hide the notification after 10 seconds
+                }, 10000); // 10 seconds
+            } else {
+                console.log('Date is not available today');
+            }
+        })
+        .catch(error => {
+            console.error('Error checking date availability:', error);
+        });
+    }
+
+    // Call the function when the page loads
+    window.onload = function() {
+        checkIfOpenToday();
+    };
+
+    // Function to show the loading spinner
+    function showLoader() {
+        document.getElementById('loader').style.display = 'flex'; // Show the loader
+    }
+
+    // Function to hide the loading spinner
+    function hideLoader() {
+        document.getElementById('loader').style.display = 'none'; // Hide the loader
+    }
+
+
+
+
+
+
+
+    function recommendTables() {
+        // Get values from inputs
+        const guestCount = parseInt(document.getElementById("guest-count").value, 10);
+        const reservationDate = document.getElementById("res-date").value.trim();
+        const today = new Date().toISOString().split("T")[0];
+
+        // Validate guest count
+        if (!guestCount || guestCount < 1 || isNaN(guestCount)) {
+            alert("Please enter a valid guest count (minimum 1).");
+            return;
+        }
+
+        // Validate reservation date (check format YYYY-MM-DD)
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+        if (!reservationDate || !datePattern.test(reservationDate)) {
+            alert("Please select a valid reservation date in YYYY-MM-DD format.");
+            return;
+        }
+        if (reservationDate < today) {
+        alert(" cannot recommend tables for past dates.");
+        return;
+    }
+
+        // Prepare data to send to the backend as JSON
+        const requestData = {
+            guestCount: guestCount,
+            reservationDate: reservationDate
+        };
+
+        fetch("RecommendTable.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok: " + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Log the response for debugging
+            if (data.success) {
+                displayRecommendations(data.recommendedTables);
+                localStorage.setItem("tableRecommendations", JSON.stringify(data.recommendedTables)); // Save to localStorage
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("There was an error processing your request. Please try again later.");
+        });
+    }
+
+    // Function to display table recommendations on the page
+    function displayRecommendations(recommendedTables) {
+        const recommendationsDiv = document.getElementById("table-recommendations");
+        recommendationsDiv.innerHTML = "";  // Clear previous recommendations
+
+        for (const timeSlot in recommendedTables) {
+            const tables = recommendedTables[timeSlot];
+
+            if (tables.length === 0) {
+                recommendationsDiv.innerHTML += `<h3 class="recommendation-header">No tables available for ${timeSlot}.</h3>`;
+                continue;
+            }
+
+            recommendationsDiv.innerHTML += `<h3 class="recommendation-header">Recommended tables for ${timeSlot}:</h3>`;
+            tables.forEach((tableGroup, index) => {
+                const tableInfo = tableGroup.map(table => 
+                    `${table.name} (Capacity: ${table.capacity})`
+                ).join(", ");
+                recommendationsDiv.innerHTML += `<p class="recommended-tables">Option ${index + 1}: ${tableInfo}</p>`;
+            });
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    function displayUserReservations(reservations) {
+        const descriptionSpan = document.getElementById('my-bookings-description');
+        let content = '';
+
+        if (!reservations.morning.length && !reservations.afternoon.length && !reservations.night.length) {
+            content = '<div class="reservation-box no-reservation">No reservations found.</div>';
+        } else {
+            const timeOfDaySections = ['morning', 'afternoon', 'night'];
+
+            timeOfDaySections.forEach(time => {
+                if (reservations[time].length > 0) {
+                    content += `<h3 class="reservation-heading">${time.charAt(0).toUpperCase() + time.slice(1)} Reservations</h3>`;
+
+                    // Group reservations by date & time
+                    const groupedReservations = groupReservationsByDateTime(reservations[time]);
+
+                    for (const [key, group] of Object.entries(groupedReservations)) {
+                        const { date, timeFrom, timeTo, status } = group[0]; // Get shared details
+                        const tableNames = group.map(res => res.table_name).join(', '); // Merge table names
+
+                        content += `
+                            <div class="reservation-box">
+                                <p><strong>Date:</strong> ${date}</p>
+                                <p><strong>Time:</strong> ${timeFrom} - ${timeTo}</p>
+                                <p><strong>Tables:</strong> <span class="recommended-table">${tableNames}</span></p>
+                                <p><strong>Status:</strong> <span class="status ${status.toLowerCase()}">${formatStatus(status)}</span></p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        descriptionSpan.innerHTML = content;
+        localStorage.setItem('cachedReservations', JSON.stringify(reservations)); // Cache for reloads
+        injectStyles();
+    }
+
+    // Load from cache on reload
+    document.addEventListener('DOMContentLoaded', () => {
+        const cachedReservations = localStorage.getItem('cachedReservations');
+        if (cachedReservations) {
+            displayUserReservations(JSON.parse(cachedReservations));
+        }
+    });
+
+    // Inject larger text style
+    function injectStyles() {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .recommended-table {
+        font-size: 1.8rem; /* Increased font size */
+        font-weight: bold;
+        color: #007bff; /* Highlight color */
+        display: block; /* Ensures it appears on a new line */
+        margin-top: 5px;
+    }
+
+
+        `;
+        document.head.appendChild(style);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function fetchUserReservations() {
+        showLoader(); // Show loader while fetching reservations
+
+        fetch('fetchuserreservations.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                alert(data.message || 'Error fetching reservations.');
+                return;
+            }
+
+            displayUserReservations(data.reservations);
+        })
+        .catch(error => {
+            console.error('Error fetching user reservations:', error);
+            alert('An error occurred while fetching your reservations.');
+        })
+        .finally(() => {
+            hideLoader(); // Hide loader after fetching
+        });
+    }
+
+    function displayUserReservations(reservations) {
+        const descriptionSpan = document.getElementById('my-bookings-description');
+        let content = '';
+
+        if (!reservations.morning.length && !reservations.afternoon.length && !reservations.night.length) {
+            content = '<div class="reservation-box no-reservation">No reservations found.</div>';
+        } else {
+            const timeOfDaySections = ['morning', 'afternoon', 'night'];
+
+            timeOfDaySections.forEach(time => {
+                if (reservations[time].length > 0) {
+                    content += `<h3 class="reservation-heading">${time.charAt(0).toUpperCase() + time.slice(1)} Reservations</h3>`;
+
+                    // Group reservations by date & time
+                    const groupedReservations = groupReservationsByDateTime(reservations[time]);
+
+                    for (const [key, group] of Object.entries(groupedReservations)) {
+                        const { date, timeFrom, timeTo, status } = group[0]; // Get shared details
+                        const tableNames = group.map(res => res.table_name).join(', '); // Merge table names
+
+                        content += `
+                            <div class="reservation-box">
+                                <p><strong>Date:</strong> ${date}</p>
+                                <p><strong>Time:</strong> ${timeFrom} - ${timeTo}</p>
+                                <p><strong>Tables:</strong> ${tableNames}</p>
+                                <p><strong>Status:</strong> <span class="status ${status.toLowerCase()}">${formatStatus(status)}</span></p>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        descriptionSpan.innerHTML = content;
+        injectStyles();
+    }
+
+
+    function groupReservationsByDateTime(reservations) {
+        const grouped = {};
+
+        reservations.forEach(reservation => {
+            const date = formatDate(reservation.time_from);
+            const timeFrom = formatTime(reservation.time_from);
+            const timeTo = formatTime(reservation.time_to);
+            const key = `${date}_${timeFrom}_${timeTo}`;
+
+            if (!grouped[key]) {
+                grouped[key] = [];
+            }
+
+            grouped[key].push({
+                table_name: reservation.table_name, // Only keeping table name now
+                date,
+                timeFrom,
+                timeTo,
+                status: reservation.status
+            });
+        });
+
+        return grouped;
+        }
+
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return isNaN(date) ? 'Unknown Date' : date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            if (isNaN(date)) return 'Invalid Time';
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            return `${((hours % 12) || 12)}:${minutes.toString().padStart(2, '0')} ${hours >= 12 ? 'PM' : 'AM'}`;
+        }
+
+        
+        function formatStatus(status) {
+            return status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown';
+        }
+
+        
+        function injectStyles() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .reservation-box {
+                    border: 2px solid #ddd;
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin-bottom: 15px;
+                    background-color: #f4f4f4;
+                    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+                    max-width: 400px;
+                    transition: transform 0.2s;
+                }
+
+                .reservation-box:hover {
+                    transform: scale(1.02);
+                }
+
+                .reservation-heading {
+                    font-size: 18px;
+                    color: #444;
+                    margin-top: 20px;
+                }
+
+                .status {
+                    font-weight: bold;
+                    padding: 3px 6px;
+                    border-radius: 5px;
+                }
+
+                .status.approved {
+                    color: white;
+                    background-color: green;
+                }
+
+                .status.pending {
+                    color: white;
+                    background-color: orange;
+                }
+
+                .status.cancelled {
+                    color: white;
+                    background-color: red;
+                }
+
+                .no-reservation {
+                    text-align: center;
+                    font-size: 16px;
+                    color: #777;
+                    font-style: italic;
+                }
+            `;
+            document.head.appendChild(style);
+    }
+
+
+
+</script>
+    
+    
+</body>
+
+</html>
