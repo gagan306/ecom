@@ -45,8 +45,8 @@ if (isset($_POST['requestReset'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Your SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = 'thebatas2024@gmail.com'; // Your SMTP username
-            $mail->Password = 'zmut czzb mdxo fntn'; // Your SMTP password
+            $mail->Username = ''; // Your SMTP username
+            $mail->Password = ''; // Your SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
